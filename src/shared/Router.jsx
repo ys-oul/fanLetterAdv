@@ -8,11 +8,11 @@ export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/detail/:id" element={<Detail />} />
         {/* <Route path="*" element={<Navigate replace to="/" />} /> */}
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

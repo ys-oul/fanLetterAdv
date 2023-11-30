@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
+import api from "../axios/api";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -49,13 +50,37 @@ function SignUp() {
       : false;
   console.log(form, isValid);
 
+  const onSignupHanlder = async (form) => {
+    const newUser = {
+      id: form.id,
+      password: form.pw,
+      nickname: form.nickname,
+    };
+    api
+      .post(`/register`, newUser)
+      .then((res) => {
+        alert("회원가입 성공!");
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <Div>
         <SignUpBox>
           <H2>회원가입</H2>
 
-          <Form action="">
+          <Form
+            action=""
+            onSubmit={(e) => {
+              //회원가입 시 새로고침 방지 수정 필요
+              e.preventDefault();
+              onSignupHanlder(form);
+            }}
+          >
             <ul>
               <Li>
                 <label>
@@ -81,7 +106,7 @@ function SignUp() {
                   </ValidMessage>
                 </label>
                 <Input
-                  type="text"
+                  type="password"
                   required
                   placeholder="비밀번호 (4~15글자)"
                   onChange={(event) => {
@@ -97,7 +122,7 @@ function SignUp() {
                   </ValidMessage>
                 </label>
                 <Input
-                  type="text"
+                  type="password"
                   required
                   placeholder="비밀번호 확인"
                   onChange={(event) => {
@@ -128,12 +153,12 @@ function SignUp() {
             <SignUpBtn
               $isValid={isValid}
               disabled={!isValid} //버튼 활성화
-              onClick={() => console.log("클릭!")}
+              // onClick={(form) => onSignupHanlder(form)}
             >
               회원가입
             </SignUpBtn>
           </Form>
-          <LoginBtn onClick={() => navigate("/login")}>로그인</LoginBtn>
+          <LoginBtn onClick={() => navigate("/")}>로그인</LoginBtn>
         </SignUpBox>
       </Div>
     </>

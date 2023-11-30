@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
+import api from "../axios/api";
+import { useDispatch } from "react-redux";
+import { login } from "redux/modules/authSlice";
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [form, setForm] = useState({
     id: "",
     validId: false, //id가 유효한가
@@ -27,7 +31,19 @@ function Login() {
 
   console.log(form, isValid);
 
-  const loginBtnHandler = () => {};
+  const loginBtnHandler = async (form) => {
+    api
+      .post(`/login`, { id: form.id, password: form.pw })
+      .then((res) => {
+        console.log(res);
+        const accessToken = res.data.accessToken;
+        localStorage.setItem("token", accessToken);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <>
@@ -35,7 +51,14 @@ function Login() {
         <SignUpBox>
           <H2>로그인</H2>
 
-          <Form action="">
+          <Form
+            action=""
+            onSubmit={(e) => {
+              //로그인 시 새로고침 방지 수정 필요
+              e.preventDefault();
+              loginBtnHandler(form);
+            }}
+          >
             <ul>
               <Li>
                 <label>아이디</label>
@@ -49,7 +72,7 @@ function Login() {
               <Li>
                 <label>비밀번호</label>
                 <Input
-                  type="text"
+                  type="password"
                   required
                   placeholder="비밀번호 (4~15글자)"
                   onChange={(event) => pwInputHandler(event)}
