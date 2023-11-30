@@ -1,19 +1,17 @@
-const SET_MEMBER = "member/SET_MEMBER";
-
-export const setMember = (payload) => {
-  return { type: SET_MEMBER, payload };
-};
-
+import { createSlice } from "@reduxjs/toolkit";
 const initialState = "카리나";
 
-const member = (state = initialState, action) => {
-  switch (action.type) {
-    case SET_MEMBER:
+const member = createSlice({
+  name: "member",
+  initialState,
+  reducers: {
+    setMember: (state, action) => {
       const activeMember = action.payload;
+      console.log(activeMember);
       return activeMember;
-    default:
-      return state;
-  }
-};
+    },
+  },
+});
 
-export default member;
+export const { setMember } = member.actions;
+export default member.reducer;
