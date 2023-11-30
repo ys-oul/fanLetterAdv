@@ -7,7 +7,6 @@ const member = createSlice({
   reducers: {
     setMember: (state, action) => {
       const activeMember = action.payload;
-      console.log(activeMember);
       return activeMember;
     },
   },
