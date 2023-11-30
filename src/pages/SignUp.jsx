@@ -17,13 +17,15 @@ function SignUp() {
 
   const idInputHandler = (event) => {
     const input = event.target.value;
-    if (input.length > 3) setForm({ ...form, id: input, validId: true });
+    if (input.length >= 4 && input.length <= 10)
+      setForm({ ...form, id: input, validId: true });
     else setForm({ ...form, id: input, validId: false });
   };
 
   const pwInputHandler = (event) => {
     const input = event.target.value;
-    if (input.length > 3) setForm({ ...form, pw: input, validPw: true });
+    if (input.length >= 4 && input.length <= 15)
+      setForm({ ...form, pw: input, validPw: true });
     else setForm({ ...form, pw: input, validPw: false });
   };
 
@@ -36,7 +38,7 @@ function SignUp() {
 
   const nicknameInputHandler = (event) => {
     const input = event.target.value;
-    if (input.length >= 1)
+    if (input.length >= 1 && input.length <= 10)
       setForm({ ...form, nickname: input, validNickname: true });
     else setForm({ ...form, nickname: input, validNickname: false });
   };
@@ -56,7 +58,12 @@ function SignUp() {
           <Form action="">
             <ul>
               <Li>
-                <label>사용할 아이디</label>
+                <label>
+                  사용할 아이디{" "}
+                  <ValidMessage $target={form.id} $valid={form.validId}>
+                    아이디가 너무 길거나 짧습니다
+                  </ValidMessage>
+                </label>
                 <Input
                   type="text"
                   required
@@ -67,7 +74,12 @@ function SignUp() {
                 />
               </Li>
               <Li>
-                <label>비밀번호</label>
+                <label>
+                  비밀번호{" "}
+                  <ValidMessage $target={form.pw} $valid={form.validPw}>
+                    비밀번호가 너무 길거나 짧습니다
+                  </ValidMessage>
+                </label>
                 <Input
                   type="text"
                   required
@@ -78,7 +90,12 @@ function SignUp() {
                 />
               </Li>
               <Li>
-                <label>비밀번호 확인</label>
+                <label>
+                  비밀번호 확인{" "}
+                  <ValidMessage $target={form.pwCheck} $valid={form.validCheck}>
+                    비밀번호가 일치하지 않습니다
+                  </ValidMessage>
+                </label>
                 <Input
                   type="text"
                   required
@@ -89,7 +106,15 @@ function SignUp() {
                 />
               </Li>
               <Li>
-                <label>사용할 닉네임</label>
+                <label>
+                  사용할 닉네임{" "}
+                  <ValidMessage
+                    $target={form.nickname}
+                    $valid={form.validNickname}
+                  >
+                    닉네임이 너무 길거나 짧습니다
+                  </ValidMessage>
+                </label>
                 <Input
                   type="text"
                   required
@@ -185,4 +210,22 @@ const LoginBtn = styled.p`
   text-align: center;
 
   color: gray;
+`;
+
+const ValidMessage = styled.span`
+  ${(props) => {
+    const idInfo = [props.$valid, props.$target];
+    if (idInfo[0] === false && idInfo[1].length !== 0) {
+      return css`
+        display: inline;
+        font-size: 12px;
+        font-weight: bold;
+        font-style: italic;
+        color: red;
+      `;
+    }
+    return css`
+      display: none;
+    `;
+  }}
 `;
