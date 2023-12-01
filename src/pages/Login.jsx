@@ -2,12 +2,19 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import api from "../axios/api";
-import { useDispatch } from "react-redux";
-import { login } from "redux/modules/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { isLogined } from "redux/modules/authSlice";
+import SignUp from "../components/SignUp";
 
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isLogin, setIsLogin] = useState(
+    useSelector((state) => state.loginState)
+  );
+  const [toggle, setToggle] = useState("login");
+
+  console.log(isLogin);
   const [form, setForm] = useState({
     id: "",
     validId: false, //id가 유효한가
@@ -38,7 +45,8 @@ function Login() {
         console.log(res);
         const accessToken = res.data.accessToken;
         localStorage.setItem("token", accessToken);
-        navigate("/");
+        dispatch(isLogined(true));
+        navigate("/home");
       })
       .catch((error) => {
         console.log(error);
@@ -47,49 +55,56 @@ function Login() {
 
   return (
     <>
-      <Div>
-        <SignUpBox>
-          <H2>로그인</H2>
+      {isLogin ? (
+        navigate("/home")
+      ) : (
+        <Div>
+          <LoginBox $isOpen={toggle}>
+            <H2>로그인</H2>
 
-          <Form
-            action=""
-            onSubmit={(e) => {
-              //로그인 시 새로고침 방지 수정 필요
-              e.preventDefault();
-              loginBtnHandler(form);
-            }}
-          >
-            <ul>
-              <Li>
-                <label>아이디</label>
-                <Input
-                  type="text"
-                  required
-                  placeholder="아이디 (4~10글자)"
-                  onChange={(event) => idInputHandler(event)}
-                />
-              </Li>
-              <Li>
-                <label>비밀번호</label>
-                <Input
-                  type="password"
-                  required
-                  placeholder="비밀번호 (4~15글자)"
-                  onChange={(event) => pwInputHandler(event)}
-                />
-              </Li>
-            </ul>
-            <LoginBtn
-              $isValid={isValid}
-              disabled={!isValid} //버튼 활성화
-              onClick={() => console.log("클릭!")}
+            <Form
+              action=""
+              onSubmit={(e) => {
+                //로그인 시 새로고침 방지 수정 필요
+                e.preventDefault();
+                loginBtnHandler(form);
+              }}
             >
-              로그인
-            </LoginBtn>
-          </Form>
-          <SignUpBtn onClick={() => navigate("/signup")}>회원가입</SignUpBtn>
-        </SignUpBox>
-      </Div>
+              <ul>
+                <Li>
+                  <label>아이디</label>
+                  <Input
+                    type="text"
+                    required
+                    placeholder="아이디 (4~10글자)"
+                    onChange={(event) => idInputHandler(event)}
+                  />
+                </Li>
+                <Li>
+                  <label>비밀번호</label>
+                  <Input
+                    type="password"
+                    required
+                    placeholder="비밀번호 (4~15글자)"
+                    onChange={(event) => pwInputHandler(event)}
+                  />
+                </Li>
+              </ul>
+              <LoginBtn
+                $isValid={isValid}
+                disabled={!isValid} //버튼 활성화
+                onClick={() => console.log("클릭!")}
+              >
+                로그인
+              </LoginBtn>
+            </Form>
+            <SignUpBtn onClick={() => setToggle("signup")}>회원가입</SignUpBtn>
+          </LoginBox>
+        </Div>
+      )}
+      <SignUpBox $isOpen={toggle}>
+        <SignUp setToggle={setToggle} />
+      </SignUpBox>
     </>
   );
 }
@@ -104,7 +119,17 @@ const Div = styled.div`
   font-family: "Noto sans KR";
 `;
 
-const SignUpBox = styled.div`
+const LoginBox = styled.div`
+  ${(props) => {
+    if (props.$isOpen === "login") {
+      return css`
+        display: block;
+      `;
+    }
+    return css`
+      display: none;
+    `;
+  }}
   width: 600px;
   padding: 50px;
   margin-top: 100px;
@@ -164,4 +189,17 @@ const SignUpBtn = styled.p`
   text-align: center;
 
   color: gray;
+`;
+
+const SignUpBox = styled.div`
+  ${(props) => {
+    if (props.$isOpen === "signup") {
+      return css`
+        display: block;
+      `;
+    }
+    return css`
+      display: none;
+    `;
+  }}
 `;

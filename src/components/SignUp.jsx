@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import api from "../axios/api";
 
-function SignUp() {
+function SignUp(props) {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     id: "",
@@ -158,7 +158,7 @@ function SignUp() {
               회원가입
             </SignUpBtn>
           </Form>
-          <LoginBtn onClick={() => navigate("/")}>로그인</LoginBtn>
+          <LoginBtn onClick={() => props.setToggle("login")}>로그인</LoginBtn>
         </SignUpBox>
       </Div>
     </>

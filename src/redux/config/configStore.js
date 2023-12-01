@@ -12,10 +12,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import letters from "../modules/letters";
 import member from "../modules/member";
-import isLogined from "../modules/authSlice";
+import loginState from "../modules/authSlice";
 
 const store = configureStore({
-  reducer: { letters: letters, member: member, isLogined: isLogined },
+  reducer: { letters: letters, member: member, loginState: loginState },
 });
 
 export default store;
