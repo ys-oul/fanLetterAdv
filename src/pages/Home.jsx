@@ -10,8 +10,8 @@ export default function Home() {
   const isLogin = useSelector((state) => state.loginState);
   const navigate = useNavigate();
   useEffect(() => {
-    if (isLogin === false) navigate("/login");
-  }, [isLogin]);
+    if (isLogin.isLogined === false) navigate("/login");
+  }, [isLogin, navigate]);
 
   return (
     <Container>

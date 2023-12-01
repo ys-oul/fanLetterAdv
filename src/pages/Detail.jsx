@@ -14,8 +14,8 @@ export default function Detail() {
 
   const isLogin = useSelector((state) => state.loginState);
   useEffect(() => {
-    if (isLogin === false) navigate("/login");
-  }, [isLogin]);
+    if (isLogin.isLogined === false) navigate("/login");
+  }, [isLogin, navigate]);
 
   const [isEditing, setIsEditing] = useState(false);
   const [editingText, setEditingText] = useState("");

@@ -54,13 +54,14 @@ function SignUp(props) {
       password: form.pw,
       nickname: form.nickname,
     };
-    api
+    await api
       .post(`/register`, newUser)
       .then((res) => {
         alert("회원가입 성공!");
         props.setToggle("login");
       })
       .catch((error) => {
+        if (error.response.status === 409) alert("이미 존재하는 아이디 입니다");
         console.log(error);
       });
   };

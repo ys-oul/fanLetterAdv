@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import api from "../axios/api";
 import { useDispatch, useSelector } from "react-redux";
-import { isLogined } from "redux/modules/authSlice";
+import { setLogin } from "redux/modules/authSlice";
 import SignUp from "../components/SignUp";
 
 function Login() {
@@ -36,17 +36,22 @@ function Login() {
   console.log(form, isValid);
 
   const loginBtnHandler = async (form) => {
-    api
+    await api
       .post(`/login`, { id: form.id, password: form.pw })
       .then((res) => {
-        console.log(res);
-        const accessToken = res.data.accessToken;
-        localStorage.setItem("token", accessToken);
-        dispatch(isLogined(true));
+        console.log(res.data);
+        const { accessToken, userId, avatar, nickname } = res.data;
+        localStorage.setItem(
+          "userInfo",
+          JSON.stringify({ accessToken, userId, avatar, nickname })
+        );
+        dispatch(setLogin({ accessToken, userId, avatar, nickname }));
         alert("로그인 성공");
         navigate("/");
       })
       .catch((error) => {
+        if (error.response.status === 401)
+          alert("아이디 또는 비밀번호를 확인하세요");
         console.log(error);
       });
   };
