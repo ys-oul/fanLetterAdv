@@ -1,6 +1,6 @@
 import Avatar from "components/common/Avatar";
 import Button from "components/common/Button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { getFormattedDate } from "util/date";
@@ -9,11 +9,16 @@ import { deleteLetter, editLetter } from "redux/modules/letters";
 
 export default function Detail() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const letters = useSelector((state) => state.letters);
+
+  const isLogin = useSelector((state) => state.loginState);
+  useEffect(() => {
+    if (isLogin === false) navigate("/login");
+  }, [isLogin]);
 
   const [isEditing, setIsEditing] = useState(false);
   const [editingText, setEditingText] = useState("");
-  const navigate = useNavigate();
   const { id } = useParams();
   const { avatar, nickname, createdAt, writedTo, content } = letters.find(
     (letter) => letter.id === id
@@ -24,7 +29,7 @@ export default function Detail() {
     if (!answer) return;
 
     dispatch(deleteLetter(id));
-    navigate("/home");
+    navigate("/");
   };
   const onEditDone = () => {
     if (!editingText) return alert("수정사항이 없습니다.");
@@ -35,7 +40,7 @@ export default function Detail() {
   };
   return (
     <Container>
-      <Link to="/home">
+      <Link to="/">
         <HomeBtn>
           <Button text="홈으로" />
         </HomeBtn>

@@ -7,14 +7,11 @@ import { isLogined } from "redux/modules/authSlice";
 import SignUp from "../components/SignUp";
 
 function Login() {
+  console.log(useSelector((state) => state.loginState));
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [isLogin, setIsLogin] = useState(
-    useSelector((state) => state.loginState)
-  );
   const [toggle, setToggle] = useState("login");
 
-  console.log(isLogin);
   const [form, setForm] = useState({
     id: "",
     validId: false, //id가 유효한가
@@ -46,7 +43,8 @@ function Login() {
         const accessToken = res.data.accessToken;
         localStorage.setItem("token", accessToken);
         dispatch(isLogined(true));
-        navigate("/home");
+        alert("로그인 성공");
+        navigate("/");
       })
       .catch((error) => {
         console.log(error);
@@ -55,53 +53,49 @@ function Login() {
 
   return (
     <>
-      {isLogin ? (
-        navigate("/home")
-      ) : (
-        <Div>
-          <LoginBox $isOpen={toggle}>
-            <H2>로그인</H2>
+      <Div>
+        <LoginBox $isOpen={toggle}>
+          <H2>로그인</H2>
 
-            <Form
-              action=""
-              onSubmit={(e) => {
-                //로그인 시 새로고침 방지 수정 필요
-                e.preventDefault();
-                loginBtnHandler(form);
-              }}
+          <Form
+            action=""
+            onSubmit={(e) => {
+              //로그인 시 새로고침 방지 수정 필요
+              e.preventDefault();
+              loginBtnHandler(form);
+            }}
+          >
+            <ul>
+              <Li>
+                <label>아이디</label>
+                <Input
+                  type="text"
+                  required
+                  placeholder="아이디 (4~10글자)"
+                  onChange={(event) => idInputHandler(event)}
+                />
+              </Li>
+              <Li>
+                <label>비밀번호</label>
+                <Input
+                  type="password"
+                  required
+                  placeholder="비밀번호 (4~15글자)"
+                  onChange={(event) => pwInputHandler(event)}
+                />
+              </Li>
+            </ul>
+            <LoginBtn
+              $isValid={isValid}
+              disabled={!isValid} //버튼 활성화
+              onClick={() => console.log("클릭!")}
             >
-              <ul>
-                <Li>
-                  <label>아이디</label>
-                  <Input
-                    type="text"
-                    required
-                    placeholder="아이디 (4~10글자)"
-                    onChange={(event) => idInputHandler(event)}
-                  />
-                </Li>
-                <Li>
-                  <label>비밀번호</label>
-                  <Input
-                    type="password"
-                    required
-                    placeholder="비밀번호 (4~15글자)"
-                    onChange={(event) => pwInputHandler(event)}
-                  />
-                </Li>
-              </ul>
-              <LoginBtn
-                $isValid={isValid}
-                disabled={!isValid} //버튼 활성화
-                onClick={() => console.log("클릭!")}
-              >
-                로그인
-              </LoginBtn>
-            </Form>
-            <SignUpBtn onClick={() => setToggle("signup")}>회원가입</SignUpBtn>
-          </LoginBox>
-        </Div>
-      )}
+              로그인
+            </LoginBtn>
+          </Form>
+          <SignUpBtn onClick={() => setToggle("signup")}>회원가입</SignUpBtn>
+        </LoginBox>
+      </Div>
       <SignUpBox $isOpen={toggle}>
         <SignUp setToggle={setToggle} />
       </SignUpBox>
