@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import api from "../axios/api";
 
 function SignUp(props) {
-  const navigate = useNavigate();
   const [form, setForm] = useState({
     id: "",
     validId: false, //id가 유효한가
@@ -60,7 +58,7 @@ function SignUp(props) {
       .post(`/register`, newUser)
       .then((res) => {
         alert("회원가입 성공!");
-        navigate("/login");
+        props.setToggle("login");
       })
       .catch((error) => {
         console.log(error);
