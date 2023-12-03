@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { v4 as uuid } from "uuid";
 import Button from "./common/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { addLetter } from "redux/modules/letters";
+import { __addLetter } from "redux/modules/letters";
 
 export default function AddForm() {
   const dispatch = useDispatch();
@@ -21,12 +21,13 @@ export default function AddForm() {
       id: uuid(),
       nickname,
       content,
-      avatar: null,
+      avatar: userInfo.avatar,
       writedTo: member,
       createdAt: new Date(),
+      userId: userInfo.userId,
     };
 
-    dispatch(addLetter(newLetter));
+    dispatch(__addLetter(newLetter));
     setContent("");
   };
 

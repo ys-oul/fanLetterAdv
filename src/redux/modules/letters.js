@@ -1,8 +1,20 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
-import fakeData from "fakeData.json";
+//데이터 불러오기
+const { data } = await axios.get("http://localhost:5000/letters");
+console.log(data);
+const initialState = data;
 
-const initialState = fakeData;
+export const __addLetter = createAsyncThunk(
+  //action value
+  "addLetter",
+  //콜백 함수
+  async (payload, thunkAPI) => {
+    await axios.post("http://localhost:5000/letters", payload);
+    thunkAPI.dispatch(addLetter(payload));
+  }
+);
 
 const letters = createSlice({
   name: "letter",
