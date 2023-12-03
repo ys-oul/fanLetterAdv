@@ -28,15 +28,15 @@ export const __editInfo = createAsyncThunk(
     // avatar와 nickname 중 하나 또느 모두 변경 가능
     formData.append("avatar", imgFile);
     formData.append("nickname", nickname);
-    console.log("ediiiii: ", formData);
 
     // 요청 시 Content-Type에 유의
-    await api.patch(`/profile`, formData, {
+    const response = await api.patch(`/profile`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${accessToken}`,
       },
     });
+
     let data = JSON.parse(localStorage.getItem("userInfo"));
     localStorage.setItem(
       "userInfo",

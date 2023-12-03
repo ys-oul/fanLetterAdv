@@ -5,6 +5,9 @@ import { useState, useEffect } from "react";
 import { __editInfo } from "redux/modules/authSlice";
 import { useNavigate } from "react-router-dom";
 
+import { storage } from "../firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
 export default function Profile() {
   const navigate = useNavigate();
 
@@ -21,18 +24,36 @@ export default function Profile() {
   const dispatch = useDispatch();
   const [imageSrc, setImageSrc] = useState(avatar);
 
-  const onUpload = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
+  // const onUpload = (e) => {
+  //   const file = e.target.files[0];
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(file);
 
-    return new Promise((resolve) => {
-      reader.onload = () => {
-        setImageSrc(reader.result || null); // 파일의 컨텐츠
-        resolve();
-      };
-    });
+  //   return new Promise((resolve) => {
+  //     reader.onload = () => {
+  //       setImageSrc(reader.result || null); // 파일의 컨텐츠
+  //       resolve();
+  //     };
+  //   });
+  // };
+  const uploadFB = async (e) => {
+    console.log(e.target.files[0]);
+    const uploaded_file = await uploadBytes(
+      ref(
+        storage,
+        `images/${e.target.files[0].name}`
+        //전 업로드 할 파일의 이름을 각 파일 이름으로 저장되게 했어요!
+      ),
+      e.target.files[0]
+    );
+    ////추가로 url도 긁어볼까요?///
+    const file_url = await getDownloadURL(uploaded_file.ref);
+    console.log(file_url);
+    setImageSrc(file_url);
+
+    //url을 잘 활용해봐요!!
   };
+
   const openEditHandler = () => {
     SetIsEdit(true);
   };
@@ -65,12 +86,14 @@ export default function Profile() {
               placeholder={nickname}
               onChange={(event) => SetEditName(event.target.value)}
             />
-            <InputImg
+            {/* <InputImg
               accept="image/*"
               multiple
               type="file"
               onChange={(e) => onUpload(e)}
-            />
+            /> */}
+            <input type="file" onChange={(e) => uploadFB(e)} />
+
             <EditBtn onClick={() => EditHandler()}>수정 완료</EditBtn>
           </>
         )}
