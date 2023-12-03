@@ -28,13 +28,22 @@
       "userId": "solar123"
     },
     {
-      "id": "96b5c389-b595-428b-a80c-7b5e6bb45f09",
-      "nickname": "a",
-      "content": "수정?!",
-      "avatar": null,
+      "id": "d1f5c2ff-2c37-453a-abb2-10d42bd2016a",
+      "nickname": "에스파 짱!",
+      "content": "asdf",
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/imgupload-72168.appspot.com/o/images%2FaespaHeader.jpg?alt=media&token=ace2b47f-da65-4651-bae8-b3f5c47da22d",
       "writedTo": "카리나",
-      "createdAt": "2023-12-03T10:04:29.084Z",
+      "createdAt": "2023-12-03T19:26:05.485Z",
       "userId": "id1234"
+    },
+    {
+      "id": "0118b944-74e4-441d-ab9d-55e8c4fee3da",
+      "nickname": "asdf123",
+      "content": "최고!!!!",
+      "avatar": null,
+      "writedTo": "윈터",
+      "createdAt": "2023-12-03T19:34:36.653Z",
+      "userId": "asdf123"
     }
   ]
 }

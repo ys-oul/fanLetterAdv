@@ -22,12 +22,14 @@ export default function LetterCard({ letter }) {
 }
 
 const LetterWrapper = styled.li`
+  background-color: #c7f1ff;
+
   display: flex;
   flex-direction: column;
   gap: 12px;
-  color: white;
-  padding: 12px;
-  border: 1px solid white;
+  color: black;
+  padding: 20px;
+
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s;
@@ -46,14 +48,17 @@ const NicknameAndDate = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6px;
+  margin-left: 10px;
+  font-family: "Noto Sans KR";
 `;
 
 const Content = styled.p`
-  background-color: gray;
+  background-color: white;
   border-radius: 12px;
   padding: 12px;
   margin-left: 62px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: "Noto Sans KR";
 `;

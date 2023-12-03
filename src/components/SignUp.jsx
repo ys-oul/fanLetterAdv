@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import api from "../axios/api";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function SignUp(props) {
   const [form, setForm] = useState({
     id: "",
@@ -57,17 +60,19 @@ function SignUp(props) {
     await api
       .post(`/register`, newUser)
       .then((res) => {
-        alert("회원가입 성공!");
+        toast.success("회원가입 성공!");
         props.setToggle("login");
       })
       .catch((error) => {
-        if (error.response.status === 409) alert("이미 존재하는 아이디 입니다");
+        if (error.response.status === 409)
+          toast.error("이미 존재하는 아이디 입니다");
         console.log(error);
       });
   };
 
   return (
     <>
+      <ToastContainer />
       <Div>
         <SignUpBox>
           <H2>회원가입</H2>

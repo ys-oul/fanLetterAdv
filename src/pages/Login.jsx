@@ -5,6 +5,8 @@ import api from "../axios/api";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogin } from "redux/modules/authSlice";
 import SignUp from "../components/SignUp";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
   console.log(useSelector((state) => state.loginState));
@@ -47,18 +49,19 @@ function Login() {
           JSON.stringify({ accessToken, userId, avatar, nickname })
         );
         dispatch(setLogin({ accessToken, userId, avatar, nickname }));
-        alert("로그인 성공");
+        toast.success("로그인 성공");
         navigate("/");
       })
       .catch((error) => {
         if (error.response.status === 401)
-          alert("아이디 또는 비밀번호를 확인하세요");
+          toast.error("아이디 또는 비밀번호를 확인하세요");
         console.log(error);
       });
   };
 
   return (
     <>
+      <ToastContainer />
       <Div>
         <LoginBox $isOpen={toggle}>
           <H2>로그인</H2>

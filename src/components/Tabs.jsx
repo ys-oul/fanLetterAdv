@@ -22,10 +22,10 @@ export default function Tabs() {
 }
 
 const TabsWrapper = styled.ul`
-  background-color: gray;
+  background-image: linear-gradient(to right, #64b3ce, #bda6f6);
   display: flex;
   justify-content: space-between;
-  padding: 12px;
+  padding: 8px;
   gap: 12px;
   border-radius: 12px;
 `;
@@ -34,20 +34,23 @@ const Tab = styled.li`
   ${(props) => {
     if (props.$activeMember === props.children) {
       return css`
-        background-color: yellow;
+        background-color: white;
         color: black;
+        font-style: italic;
       `;
     }
     return css`
-      background-color: black;
+      background-color: transparent;
       color: white;
     `;
   }}
 
-  font-size: 20px;
-  width: 80px;
+  font-size: 16px;
+
+  width: 70px;
   text-align: center;
   padding: 12px 6px;
   border-radius: 12px;
   cursor: pointer;
+  font-family: "Noto Sans KR";
 `;

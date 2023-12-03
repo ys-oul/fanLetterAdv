@@ -1,12 +1,13 @@
 import Tabs from "./Tabs";
 import styled from "styled-components";
 import Layout from "./common/Layout";
+import headerImg from "../assets/aespaHeader.jpg";
 
 export default function Header() {
   return (
     <Container>
       <Layout />
-      <Title>에스파 팬레터함</Title>
+      <Title>Aespa fanletters</Title>
       <Tabs />
     </Container>
   );
@@ -14,8 +15,8 @@ export default function Header() {
 
 const Container = styled.section`
   width: 100%;
-  height: 300px;
-  background-color: lightgray;
+  height: 500px;
+  background-image: url(${headerImg});
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,9 +24,11 @@ const Container = styled.section`
 `;
 
 const Title = styled.h1`
-  font-size: 36px;
-  font-weight: 700;
-  color: yellow;
+  font-family: "Racing Sans One";
+  font-size: 64px;
+  color: white;
+  text-shadow: 2px 2px #8d72d2;
+  font-style: italic;
   flex: 1;
   display: flex;
   align-items: center;

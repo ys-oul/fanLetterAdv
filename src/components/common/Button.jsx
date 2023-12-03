@@ -12,11 +12,20 @@ const BtnWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
+
+  margin-bottom: 15px;
+  margin-right: 10px;
+
   & button {
-    background-color: black;
+    font-family: "Noto Sans KR";
+    background-color: #ac8bfd;
+    border: none;
     color: white;
-    font-size: 16px;
+    font-size: 15px;
     padding: 6px 12px;
     cursor: pointer;
+    border-radius: 12px;
+    width: 100px;
+    height: 35px;
   }
 `;

@@ -6,6 +6,8 @@ import styled, { css } from "styled-components";
 import { getFormattedDate } from "util/date";
 import { useSelector, useDispatch } from "react-redux";
 import { __deleteLetter, __editLetter } from "redux/modules/letters";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -37,53 +39,57 @@ export default function Detail() {
     navigate("/");
   };
   const onEditDone = () => {
-    if (!editingText) return alert("수정사항이 없습니다.");
+    if (!editingText) return toast.error("수정사항이 없습니다.");
 
     dispatch(__editLetter({ id, editingText }));
     setIsEditing(false);
     setEditingText("");
   };
   return (
-    <Container>
-      <Link to="/">
-        <HomeBtn>
-          <Button text="홈으로" />
-        </HomeBtn>
-      </Link>
+    <>
+      <ToastContainer />
 
-      <DetailWrapper>
-        <UserInfo>
-          <AvatarAndNickname>
-            <Avatar src={avatar} size="large" />
-            <Nickname>{nickname}</Nickname>
-          </AvatarAndNickname>
-          <time>{getFormattedDate(createdAt)}</time>
-        </UserInfo>
-        <ToMember>To: {writedTo}</ToMember>
+      <Container>
+        <Link to="/">
+          <HomeBtn>
+            <Button text="홈으로" />
+          </HomeBtn>
+        </Link>
 
-        {isEditing ? (
-          <>
-            <Textarea
-              autoFocus
-              defaultValue={content}
-              onChange={(event) => setEditingText(event.target.value)}
-            />
-            <BtnsWrapper>
-              <Button text="취소" onClick={() => setIsEditing(false)} />
-              <Button text="수정완료" onClick={onEditDone} />
-            </BtnsWrapper>
-          </>
-        ) : (
-          <>
-            <Content>{content}</Content>
-            <BtnsWrapper $editAble={editAble}>
-              <Button text="수정" onClick={() => setIsEditing(true)} />
-              <Button text="삭제" onClick={onDeleteBtn} />
-            </BtnsWrapper>
-          </>
-        )}
-      </DetailWrapper>
-    </Container>
+        <DetailWrapper>
+          <UserInfo>
+            <AvatarAndNickname>
+              <Avatar src={avatar} size="large" />
+              <Nickname>{nickname}</Nickname>
+            </AvatarAndNickname>
+            <time>{getFormattedDate(createdAt)}</time>
+          </UserInfo>
+          <ToMember>To: {writedTo}</ToMember>
+
+          {isEditing ? (
+            <>
+              <Textarea
+                autoFocus
+                defaultValue={content}
+                onChange={(event) => setEditingText(event.target.value)}
+              />
+              <BtnsWrapper $editAble={editAble}>
+                <Button text="취소" onClick={() => setIsEditing(false)} />
+                <Button text="수정완료" onClick={onEditDone} />
+              </BtnsWrapper>
+            </>
+          ) : (
+            <>
+              <Content>{content}</Content>
+              <BtnsWrapper $editAble={editAble}>
+                <Button text="수정" onClick={() => setIsEditing(true)} />
+                <Button text="삭제" onClick={onDeleteBtn} />
+              </BtnsWrapper>
+            </>
+          )}
+        </DetailWrapper>
+      </Container>
+    </>
   );
 }
 
@@ -102,9 +108,10 @@ const HomeBtn = styled.div`
 `;
 
 const DetailWrapper = styled.section`
-  background-color: gray;
-  color: white;
-  padding: 12px;
+  background-color: #abdced;
+  border-radius: 30px;
+  color: black;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -116,6 +123,7 @@ const UserInfo = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-family: "Noto Sans KR";
 `;
 
 const AvatarAndNickname = styled.div`
@@ -125,18 +133,21 @@ const AvatarAndNickname = styled.div`
 `;
 
 const Nickname = styled.span`
-  font-size: 32px;
+  font-size: 24px;
+  margin-left: 30px;
 `;
 
 const ToMember = styled.span`
-  font-size: 24px;
+  font-size: 20px;
+  font-family: "Noto Sans KR";
+  margin: 5px 30px;
 `;
 
 const Content = styled.p`
-  font-size: 24px;
+  font-size: 18px;
   line-height: 30px;
   padding: 12px;
-  background-color: black;
+  background-color: white;
   border-radius: 12px;
   height: 200px;
 `;
@@ -157,12 +168,14 @@ const BtnsWrapper = styled.div`
 `;
 
 const Textarea = styled.textarea`
-  font-size: 24px;
+  font-size: 18px;
   line-height: 30px;
   padding: 12px;
-  background-color: black;
+  background-color: white;
   border-radius: 12px;
   height: 200px;
   resize: none;
-  color: white;
+  color: black;
+
+  font-family: "Noto Sans KR";
 `;

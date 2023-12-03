@@ -45,12 +45,10 @@ export default function LetterList() {
 }
 
 const ListWrapper = styled.ul`
-  background-color: black;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 500px;
+  width: 600px;
   border-radius: 12px;
-  padding: 12px;
-  color: white;
+  margin-bottom: 150px;
 `;
