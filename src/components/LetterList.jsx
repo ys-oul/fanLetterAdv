@@ -1,9 +1,28 @@
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LetterCard from "./LetterCard";
+import { __setLetter } from "redux/modules/letters";
+import { useEffect } from "react";
+
+import axios from "axios";
 
 export default function LetterList() {
+  const dispatch = useDispatch();
   const activeMember = useSelector((state) => state.member);
+  // const letters = useSelector((state) => state.letters);
+
+  const fetchData = async () => {
+    const { data } = await axios.get(
+      "http://localhost:5000/letters?_sort=createdAt&_order=desc"
+    );
+    dispatch(__setLetter(data));
+  };
+
+  useEffect(() => {
+    //데이터 불러오기
+    fetchData();
+  }, []);
+
   const letters = useSelector((state) => state.letters);
 
   const filteredLetters = letters.filter(

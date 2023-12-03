@@ -17,6 +17,24 @@
       "writedTo": "카리나",
       "createdAt": "2023-12-03T06:25:09.578Z",
       "userId": "react123"
+    },
+    {
+      "id": "b597512d-10a8-4178-b4a7-5728f8b26685",
+      "nickname": "solar",
+      "content": "asdf",
+      "avatar": null,
+      "writedTo": "닝닝",
+      "createdAt": "2023-12-03T07:46:51.426Z",
+      "userId": "solar123"
+    },
+    {
+      "id": "96b5c389-b595-428b-a80c-7b5e6bb45f09",
+      "nickname": "a",
+      "content": "수정?!",
+      "avatar": null,
+      "writedTo": "카리나",
+      "createdAt": "2023-12-03T10:04:29.084Z",
+      "userId": "id1234"
     }
   ]
 }

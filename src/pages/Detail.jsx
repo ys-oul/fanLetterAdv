@@ -2,15 +2,17 @@ import Avatar from "components/common/Avatar";
 import Button from "components/common/Button";
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { getFormattedDate } from "util/date";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteLetter, editLetter } from "redux/modules/letters";
+import { __deleteLetter, __editLetter } from "redux/modules/letters";
 
 export default function Detail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const letters = useSelector((state) => state.letters);
+
+  const currentUser = useSelector((state) => state.loginState);
 
   const isLogin = useSelector((state) => state.loginState);
   useEffect(() => {
@@ -20,21 +22,24 @@ export default function Detail() {
   const [isEditing, setIsEditing] = useState(false);
   const [editingText, setEditingText] = useState("");
   const { id } = useParams();
-  const { avatar, nickname, createdAt, writedTo, content } = letters.find(
-    (letter) => letter.id === id
-  );
+  const { userId, avatar, nickname, createdAt, writedTo, content } =
+    letters.find((letter) => letter.id === id);
+
+  const editAble = userId === currentUser.userId ? true : false;
+  console.log(userId);
+  console.log(currentUser.userId);
 
   const onDeleteBtn = () => {
     const answer = window.confirm("정말로 삭제하시겠습니까?");
     if (!answer) return;
 
-    dispatch(deleteLetter(id));
+    dispatch(__deleteLetter(id));
     navigate("/");
   };
   const onEditDone = () => {
     if (!editingText) return alert("수정사항이 없습니다.");
 
-    dispatch(editLetter({ id, editingText }));
+    dispatch(__editLetter({ id, editingText }));
     setIsEditing(false);
     setEditingText("");
   };
@@ -55,6 +60,7 @@ export default function Detail() {
           <time>{getFormattedDate(createdAt)}</time>
         </UserInfo>
         <ToMember>To: {writedTo}</ToMember>
+
         {isEditing ? (
           <>
             <Textarea
@@ -70,7 +76,7 @@ export default function Detail() {
         ) : (
           <>
             <Content>{content}</Content>
-            <BtnsWrapper>
+            <BtnsWrapper $editAble={editAble}>
               <Button text="수정" onClick={() => setIsEditing(true)} />
               <Button text="삭제" onClick={onDeleteBtn} />
             </BtnsWrapper>
@@ -136,7 +142,16 @@ const Content = styled.p`
 `;
 
 const BtnsWrapper = styled.div`
-  display: flex;
+  ${(props) => {
+    if (props.$editAble) {
+      return css`
+        display: flex;
+      `;
+    }
+    return css`
+      display: none;
+    `;
+  }}
   justify-content: flex-end;
   gap: 12px;
 `;
