@@ -1,10 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-//데이터 불러오기
-const { data } = await axios.get("http://localhost:5000/letters");
-console.log(data);
-const initialState = data;
+const initialState = "";
+
+export const __setLetter = createAsyncThunk(
+  "setLetter",
+  async (payload, thunkAPI) => {
+    await axios.get("http://localhost:5000/letters");
+    thunkAPI.dispatch(setLetter(payload));
+  }
+);
 
 export const __addLetter = createAsyncThunk(
   //action value
@@ -20,6 +25,10 @@ const letters = createSlice({
   name: "letter",
   initialState,
   reducers: {
+    setLetter: (state, action) => {
+      return [...action.payload];
+    },
+
     addLetter: (state, action) => {
       const newLetter = action.payload;
       return [newLetter, ...state];
@@ -42,5 +51,6 @@ const letters = createSlice({
   },
 });
 
-export const { addLetter, deleteLetter, editLetter } = letters.actions;
+export const { setLetter, addLetter, deleteLetter, editLetter } =
+  letters.actions;
 export default letters.reducer;
