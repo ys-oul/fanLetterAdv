@@ -23,19 +23,23 @@ export const __editInfo = createAsyncThunk(
   async (payload, thunkAPI) => {
     // 이미지파일을 FormData에 담는 방법
     const { accessToken, imgFile, nickname } = payload;
-
+    console.log(payload);
     const formData = new FormData();
     // avatar와 nickname 중 하나 또느 모두 변경 가능
-    formData.append("avatar", imgFile);
+
     formData.append("nickname", nickname);
+    formData.append("avatar", imgFile);
 
     // 요청 시 Content-Type에 유의
-    const response = await api.patch(`/profile`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await api
+      .patch(`/profile`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
 
     let data = JSON.parse(localStorage.getItem("userInfo"));
     localStorage.setItem(

@@ -8,6 +8,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { __deleteLetter, __editLetter } from "redux/modules/letters";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import api from "../axios/api";
+import { setLogout } from "redux/modules/authSlice";
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -31,19 +33,52 @@ export default function Detail() {
   console.log(userId);
   console.log(currentUser.userId);
 
-  const onDeleteBtn = () => {
-    const answer = window.confirm("정말로 삭제하시겠습니까?");
-    if (!answer) return;
-
-    dispatch(__deleteLetter(id));
-    navigate("/");
+  const onDeleteBtn = async () => {
+    //토큰 유효 여부 확인
+    const response = await api
+      .get(`/user`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentUser.accessToken}`,
+        },
+      })
+      .then((res) => {
+        const answer = window.confirm("정말로 삭제하시겠습니까?");
+        if (!answer) return;
+        console.log(res);
+        dispatch(__deleteLetter(id));
+        navigate("/");
+      })
+      .catch((err) => {
+        alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
+        console.log(err);
+        dispatch(setLogout());
+        localStorage.clear();
+      });
   };
-  const onEditDone = () => {
+  const onEditDone = async () => {
     if (!editingText) return toast.error("수정사항이 없습니다.");
 
-    dispatch(__editLetter({ id, editingText }));
-    setIsEditing(false);
-    setEditingText("");
+    //토큰 유효 여부 확인
+    const response = await api
+      .get(`/user`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentUser.accessToken}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        dispatch(__editLetter({ id, editingText }));
+        setIsEditing(false);
+        setEditingText("");
+      })
+      .catch((err) => {
+        alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
+        console.log(err);
+        dispatch(setLogout());
+        localStorage.clear();
+      });
   };
   return (
     <>

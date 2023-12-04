@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { __addLetter } from "redux/modules/letters";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import api from "../axios/api";
+import { setLogout } from "redux/modules/authSlice";
 
 export default function AddForm() {
   const dispatch = useDispatch();
@@ -15,7 +17,7 @@ export default function AddForm() {
   const [content, setContent] = useState("");
   const [member, setMember] = useState("카리나");
 
-  const onAddLetter = (event) => {
+  const onAddLetter = async (event) => {
     event.preventDefault();
     if (!content) return toast.error("팬레터를 입력하세요");
 
@@ -29,8 +31,25 @@ export default function AddForm() {
       userId: userInfo.userId,
     };
 
-    dispatch(__addLetter(newLetter));
-    setContent("");
+    //access 토큰 유효 여부 확인
+    const response = await api
+      .get(`/user`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.accessToken}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        dispatch(__addLetter(newLetter));
+        setContent("");
+      })
+      .catch((err) => {
+        alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
+        console.log(err);
+        dispatch(setLogout());
+        localStorage.clear();
+      });
   };
 
   return (

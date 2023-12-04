@@ -5,8 +5,8 @@ import { useState, useEffect } from "react";
 import { __editInfo } from "redux/modules/authSlice";
 import { useNavigate } from "react-router-dom";
 
-import { storage } from "../firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import api from "../axios/api";
+import { setLogout } from "redux/modules/authSlice";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -22,50 +22,50 @@ export default function Profile() {
   const [isEdit, SetIsEdit] = useState(false);
   const [editName, SetEditName] = useState(nickname);
   const dispatch = useDispatch();
-  const [imageSrc, setImageSrc] = useState(avatar);
+  const [imageSrc, setImageSrc] = useState("");
 
-  // const onUpload = (e) => {
-  //   const file = e.target.files[0];
-  //   const reader = new FileReader();
-  //   reader.readAsDataURL(file);
+  const onUpload = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
 
-  //   return new Promise((resolve) => {
-  //     reader.onload = () => {
-  //       setImageSrc(reader.result || null); // 파일의 컨텐츠
-  //       resolve();
-  //     };
-  //   });
-  // };
-  const uploadFB = async (e) => {
-    console.log(e.target.files[0]);
-    const uploaded_file = await uploadBytes(
-      ref(
-        storage,
-        `images/${e.target.files[0].name}`
-        //전 업로드 할 파일의 이름을 각 파일 이름으로 저장되게 했어요!
-      ),
-      e.target.files[0]
-    );
-    ////추가로 url도 긁어볼까요?///
-    const file_url = await getDownloadURL(uploaded_file.ref);
-    console.log(file_url);
-    setImageSrc(file_url);
-
-    //url을 잘 활용해봐요!!
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        setImageSrc(reader.result); // 파일의 컨텐츠
+        resolve();
+      };
+      console.log(typeof imageSrc, imageSrc);
+    });
   };
-
   const openEditHandler = () => {
     SetIsEdit(true);
   };
-  const EditHandler = () => {
-    dispatch(
-      __editInfo({
-        accessToken: accessToken,
-        nickname: editName,
-        imgFile: imageSrc,
+  const EditHandler = async () => {
+    //access 토큰 유효 여부 확인
+    const response = await api
+      .get(`/user`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
       })
-    );
-    SetIsEdit(false);
+      .then((res) => {
+        console.log(res);
+        dispatch(
+          __editInfo({
+            accessToken: accessToken,
+            nickname: editName,
+            imgFile: imageSrc,
+          })
+        );
+        SetIsEdit(false);
+      })
+      .catch((err) => {
+        alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
+        console.log(err);
+        dispatch(setLogout());
+        localStorage.clear();
+      });
   };
 
   return (
@@ -86,13 +86,12 @@ export default function Profile() {
               placeholder={nickname}
               onChange={(event) => SetEditName(event.target.value)}
             />
-            {/* <InputImg
+            <InputImg
               accept="image/*"
               multiple
               type="file"
               onChange={(e) => onUpload(e)}
-            /> */}
-            <input type="file" onChange={(e) => uploadFB(e)} />
+            />
 
             <EditBtn onClick={() => EditHandler()}>수정 완료</EditBtn>
           </>

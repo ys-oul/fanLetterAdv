@@ -1,15 +1,35 @@
 import styled, { css } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { setMember } from "redux/modules/member";
+import api from "../axios/api";
+import { setLogout } from "redux/modules/authSlice";
 
 export default function Tabs() {
   const activeMember = useSelector((state) => state.member);
+  const userInfo = useSelector((state) => state.loginState);
   const dispatch = useDispatch();
 
-  const onActiveMember = (event) => {
+  const onActiveMember = async (event) => {
     if (event.target === event.currentTarget) return;
 
-    dispatch(setMember(event.target.textContent));
+    //access 토큰 유효 여부 확인
+    const response = await api
+      .get(`/user`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.accessToken}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        dispatch(setMember(event.target.textContent));
+      })
+      .catch((err) => {
+        alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
+        console.log(err);
+        dispatch(setLogout());
+        localStorage.clear();
+      });
   };
   return (
     <TabsWrapper onClick={onActiveMember}>

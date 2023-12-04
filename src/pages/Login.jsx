@@ -40,7 +40,7 @@ function Login() {
   const loginBtnHandler = async (form) => {
     await api
       // .post(`/login?expiresIn=10m`, { id: form.id, password: form.pw })
-      .post(`/login`, { id: form.id, password: form.pw })
+      .post(`/login?expiresIn=10m`, { id: form.id, password: form.pw })
       .then((res) => {
         console.log(res.data);
         const { accessToken, userId, avatar, nickname } = res.data;

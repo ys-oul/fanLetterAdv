@@ -38,7 +38,6 @@ const Nav = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 5px 60px;
-  /* position: absolute; */
   width: 100%;
   background-image: linear-gradient(to right, #64b3ce, #bda6f6);
 
