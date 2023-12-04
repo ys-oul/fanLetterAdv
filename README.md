@@ -4,7 +4,8 @@
 
 **Redux Toolkit으로 리팩토링 및 json-server 를 이용한 REST API 통신**
 
-이전 프로젝트: https://github.com/ys-oul/fanLetter.git
+https://github.com/rjc1704/react-personal-practical-lecture 에서 시작
+(이전 프로젝트: https://github.com/ys-oul/fanLetter.git)
 
 ## ![메인 페이지 화면](<localhost_3000_ (2).png>))
 
