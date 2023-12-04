@@ -17,7 +17,7 @@ export default function Home() {
 
   const fetchData = async () => {
     const { data } = await axios.get(
-      "http://localhost:5000/letters?_sort=createAt&_order=asc"
+      `${process.env.REACT_APP_LETTER_SERVER_URL}/letters?_sort=createAt&_order=asc`
     );
     setTmp(data);
   };

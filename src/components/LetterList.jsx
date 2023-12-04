@@ -12,7 +12,7 @@ export default function LetterList() {
 
   const fetchData = async () => {
     const { data } = await axios.get(
-      "http://localhost:5000/letters?_sort=createdAt&_order=desc"
+      `${process.env.REACT_APP_LETTER_SERVER_URL}/letters?_sort=createdAt&_order=desc`
     );
     dispatch(__setLetter(data));
   };

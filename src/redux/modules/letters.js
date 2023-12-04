@@ -16,7 +16,10 @@ export const __addLetter = createAsyncThunk(
   "addLetter",
   //콜백 함수
   async (payload, thunkAPI) => {
-    await axios.post("http://localhost:5000/letters", payload);
+    await axios.post(
+      `${process.env.REACT_APP_LETTER_SERVER_URL}/letters`,
+      payload
+    );
     thunkAPI.dispatch(addLetter(payload));
   }
 );
@@ -24,7 +27,9 @@ export const __addLetter = createAsyncThunk(
 export const __deleteLetter = createAsyncThunk(
   "deleteLetter",
   async (payload, thunkAPI) => {
-    await axios.delete(`http://localhost:5000/letters/${payload}`);
+    await axios.delete(
+      `${process.env.REACT_APP_LETTER_SERVER_URL}/letters/${payload}`
+    );
     thunkAPI.dispatch(deleteLetter(payload));
   }
 );
@@ -32,9 +37,12 @@ export const __deleteLetter = createAsyncThunk(
 export const __editLetter = createAsyncThunk(
   "editLetter",
   async (payload, thunkAPI) => {
-    await axios.patch(`http://localhost:5000/letters/${payload.id}`, {
-      content: payload.editingText,
-    });
+    await axios.patch(
+      `${process.env.REACT_APP_LETTER_SERVER_URL}/letters/${payload.id}`,
+      {
+        content: payload.editingText,
+      }
+    );
     thunkAPI.dispatch(editLetter(payload));
   }
 );
