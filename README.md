@@ -1,6 +1,6 @@
 # 에스파 팬래터 작성 페이지
 
-vercel 배포 링크: https://fan-letter-adv.vercel.app/login
+**vercel 배포 링크: https://fan-letter-adv.vercel.app/**
 
 **Redux Toolkit으로 리팩토링 및 json-server 를 이용한 REST API 통신**
 
