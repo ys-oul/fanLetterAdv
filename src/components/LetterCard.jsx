@@ -29,6 +29,7 @@ const LetterWrapper = styled.li`
   gap: 12px;
   color: black;
   padding: 20px;
+  text-align: left;
 
   border-radius: 12px;
   cursor: pointer;
@@ -56,7 +57,7 @@ const Content = styled.p`
   background-color: white;
   border-radius: 12px;
   padding: 12px;
-  margin-left: 62px;
+  margin-left: 12px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
