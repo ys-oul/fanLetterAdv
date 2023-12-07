@@ -11,6 +11,8 @@ import "react-toastify/dist/ReactToastify.css";
 import api from "../axios/api";
 import { setLogout } from "redux/modules/authSlice";
 
+import useInput from "../hooks/useInput";
+
 export default function Detail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -24,7 +26,9 @@ export default function Detail() {
   }, [isLogin, navigate]);
 
   const [isEditing, setIsEditing] = useState(false);
-  const [editingText, setEditingText] = useState("");
+  // const [editingText, setEditingText] = useState("");
+  const [editingText, onChangeTextHanlder] = useInput();
+
   const { id } = useParams();
   const { userId, avatar, nickname, createdAt, writedTo, content } =
     letters.find((letter) => letter.id === id);
@@ -71,7 +75,7 @@ export default function Detail() {
         console.log(res);
         dispatch(__editLetter({ id, editingText }));
         setIsEditing(false);
-        setEditingText("");
+        // setEditingText("");
       })
       .catch((err) => {
         alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
@@ -106,7 +110,8 @@ export default function Detail() {
               <Textarea
                 autoFocus
                 defaultValue={content}
-                onChange={(event) => setEditingText(event.target.value)}
+                // onChange={(event) => setEditingText(event.target.value)}
+                onChange={onChangeTextHanlder}
               />
               <BtnsWrapper $editAble={editAble}>
                 <Button text="취소" onClick={() => setIsEditing(false)} />

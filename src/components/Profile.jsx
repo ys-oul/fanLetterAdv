@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 import api from "../axios/api";
 import { setLogout } from "redux/modules/authSlice";
+import useInput from "hooks/useInput";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ export default function Profile() {
   const [editName, SetEditName] = useState(nickname);
   const dispatch = useDispatch();
   const [imageSrc, setImageSrc] = useState("");
+  // const [imgSrc, onChangeImgSrcHandler] = useInput();
 
   const onUpload = (e) => {
     const file = e.target.files[0];

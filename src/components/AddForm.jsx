@@ -8,14 +8,17 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import api from "../axios/api";
 import { setLogout } from "redux/modules/authSlice";
+import useInput from "hooks/useInput";
 
 export default function AddForm() {
   const dispatch = useDispatch();
 
   const userInfo = useSelector((state) => state.loginState);
   const nickname = userInfo.nickname;
-  const [content, setContent] = useState("");
-  const [member, setMember] = useState("카리나");
+  // const [content, setContent] = useState("");
+  const [content, onChangeContentHandler] = useInput();
+  // const [member, setMember] = useState("카리나");
+  const [member, onChangeMemberHandler] = useInput();
 
   const onAddLetter = async (event) => {
     event.preventDefault();
@@ -42,7 +45,7 @@ export default function AddForm() {
       .then((res) => {
         console.log(res);
         dispatch(__addLetter(newLetter));
-        setContent("");
+        // setContent("");
       })
       .catch((err) => {
         alert("토큰이 만료되었습니다. 다시 로그인 해주세요.");
@@ -65,13 +68,13 @@ export default function AddForm() {
           <textarea
             placeholder="최대 100글자까지 작성할 수 있습니다."
             maxLength={100}
-            onChange={(event) => setContent(event.target.value)}
+            onChange={onChangeContentHandler}
             value={content}
           />
         </InputWrapper>
         <SelectWrapper>
           <label>누구에게 보내실 건가요?</label>
-          <select onChange={(event) => setMember(event.target.value)}>
+          <select onChange={onChangeMemberHandler}>
             <option>카리나</option>
             <option>윈터</option>
             <option>닝닝</option>
